@@ -14,10 +14,15 @@ matrix:
   - python: 3.7
     env: TOXENV=py37
     dist: xenial
-    sudo: true  # required for py37, docker
+    sudo: true  # required for py37, docker, snapcraft
     services:
     - docker
+    addons:
+      apt:
+        packages:
+        - snapd
     after_success:
+    - sudo snap install snapcraft --classic
     - echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
     - make -B docker
     - |
@@ -26,6 +31,7 @@ matrix:
     - docker tag tqdm/tqdm:latest tqdm/tqdm:devel
     - pip install .[dev]
     - make build
+    - make snap
     #- make submodules
     #- cd wiki && make && cd ..
     - openssl aes-256-cbc -K $encrypted_a6d6301302b7_key
@@ -57,6 +63,16 @@ matrix:
       script: docker push tqdm/tqdm:devel
       on:
         branch: devel
+    - provider: snap
+      snap: tqdm*.snap
+      channel: stable
+      skip_cleanup: true
+      on:
+        tags: true
+    - provider: snap
+      snap: tqdm*.snap
+      channel: candidate
+      skip_cleanup: true
   - python: pypy2.7-5.10.0
     env: TOXENV=pypy
   - python: pypy3.5-5.10.0
