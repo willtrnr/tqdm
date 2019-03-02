@@ -74,6 +74,12 @@ matrix:
       snap: tqdm*.snap
       channel: candidate
       skip_cleanup: true
+    - provider: snap
+      snap: tqdm*.snap
+      channel: edge
+      skip_cleanup: true
+      on:
+        branch: devel
   - python: pypy2.7-5.10.0
     env: TOXENV=pypy
   - python: pypy3.5-5.10.0
