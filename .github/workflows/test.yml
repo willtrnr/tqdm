@@ -166,7 +166,7 @@ jobs:
         snap: ${{ steps.snap_build.outputs.snap }}
         release: ${{ steps.collect_assets.outputs.snap_channel }}
     - name: Docker build push
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         name: ${{ github.repository }}
         tags: ${{ steps.collect_assets.outputs.docker_tags }}
@@ -174,7 +174,7 @@ jobs:
         username: ${{ secrets.DOCKER_USR }}
         no_push: ${{ steps.collect_assets.outputs.docker_tags == '' }}
     - name: Docker push GitHub
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         name: ${{ github.repository }}/tqdm
         tags: ${{ steps.collect_assets.outputs.docker_tags }}
